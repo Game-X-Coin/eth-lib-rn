@@ -1,5 +1,3 @@
-const request = require("xhr-request-promise");
-
 const genPayload = (() => {
   let nextId = 0;
   return (method, params) => ({
@@ -11,19 +9,20 @@ const genPayload = (() => {
 })();
 
 const send = url => (method, params) => {
-  return request(url, {
+  return fetch(url, {
     method: "POST",
     contentType: "application/json-rpc",
     body: JSON.stringify(genPayload(method,params))
-  }).then(answer => {
-    var resp = JSON.parse(answer); // todo: use njsp?
-    if (resp.error) {
-      throw new Error(resp.error.message);
+  }).then(res => {
+    const data = JSON.parse(res._bodyText);
+
+    if (data.error) {
+      throw new Error(data.error.message);
     } else {
-      return resp.result;
+      return data.result;
     }
   }).catch(e => {
-    return {error: e.toString()};
+    return { error: e.toString() };
   });
 };
 
