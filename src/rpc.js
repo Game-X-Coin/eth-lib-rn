@@ -21,7 +21,7 @@ const send = url => (method, params) => {
     } else {
       return data.result;
     }
-  }).catch(e => e);
+  }).catch(e => { throw e });
 };
 
 module.exports = send;
