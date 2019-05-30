@@ -26,7 +26,7 @@ const addDefaults = (rpc, tx) => {
         data: tx.data
       }]);
     return gasEstimator.then(gasEstimate => {
-      if (gasEstimate.error) {
+      if (gasEstimate && gasEstimate.error) {
         throw gasEstimate.error;
       }
       return {
